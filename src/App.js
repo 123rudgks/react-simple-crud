@@ -14,14 +14,14 @@ export default class App extends React.Component {
     super();
     this.state = {
       topcontent: { title: "Web", sub: "World Wide Web" },
-      mode: "read",
+      mode: "welcome",
       welcome: { title: "Welcome", desc: "Welcome to the React World" },
       contents: [
         { title: "HTML", desc: "HTML is for constructing" },
         { title: "CSS", desc: "CSS is for design" },
         { title: "JavaScrip", desc: "JavaScript is for interaction" }
       ],
-      contentsIndex: 0
+      contentsIndex: null
     };
   }
 
@@ -30,6 +30,7 @@ export default class App extends React.Component {
     let mainContent,
       _title,
       _desc = null;
+    // 가장 최근에 클릭한 menu의 index
     let index = this.state.contentsIndex;
     mainContent = <MainContent _title={_title} _desc={_desc} />;
 
@@ -37,6 +38,7 @@ export default class App extends React.Component {
       // welcome page
       _title = this.state.welcome.title;
       _desc = this.state.welcome.desc;
+      mainContent = <MainContent _title={_title} _desc={_desc} />;
     } else if (this.state.mode === "read") {
       // read page
       // 현재 contentsIndex에 따른 페이지
@@ -59,12 +61,17 @@ export default class App extends React.Component {
         />
       );
     } else if (this.state.mode === "delete") {
-      this.setState({
-        contents: this.state.contents.splice(index, 1)
-      });
+       if(this.state.contents[index]){
+         const newContents = Array.from(this.state.contents);
+         newContents.splice(index,1);
+         this.setState({
+           contents: newContents,
+           mode: "welcome"
+         });
+       } else this.setState({mode: "welcome"});
     } else if (
       this.state.mode === "update" &&
-      this.state.contentsIndex !== null
+      this.state.contents[index]
     ) {
       _title = this.state.contents[index].title;
       _desc = this.state.contents[index].desc;
