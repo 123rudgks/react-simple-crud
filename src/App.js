@@ -50,13 +50,18 @@ export default class App extends React.Component {
       mainContent = (
         <CreateContent
           _create={(_title, _desc) => {
-            this.setState({
-              // contents에 새로 create한 객체 추가
-              contents: this.state.contents.concat({
-                title: _title,
-                desc: _desc
-              })
-            });
+            if(_title && _desc){
+              this.setState({
+                // contents에 새로 create한 객체 추가
+                contents: this.state.contents.concat({
+                  title: _title,
+                  desc: _desc
+                })
+              });
+            }else{
+              alert("check if you fill the form correctly");
+            }
+            
           }}
         />
       );
